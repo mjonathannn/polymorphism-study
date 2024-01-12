@@ -1,3 +1,9 @@
+import {
+  ElementType,
+  PropsWithChildren,
+  ComponentPropsWithoutRef,
+} from "react";
+
 type Rainbow =
   | "red"
   | "orange"
@@ -7,22 +13,21 @@ type Rainbow =
   | "indigo"
   | "violet";
 
-type AsProp<C extends React.ElementType> = {
+type AsProp<C extends ElementType> = {
   as?: C;
 };
 
-type PropsToOmit<C extends React.ElementType, Props> = keyof (AsProp<C> &
-  Props);
+type PropsToOmit<C extends ElementType, Props> = keyof (AsProp<C> & Props);
 
 type TextProps = { color?: Rainbow | "black" };
 
 type PolymorphicComponentProp<
-  C extends React.ElementType,
+  C extends ElementType,
   Props = {}
-> = React.PropsWithChildren<Props & AsProp<C>> &
-  Omit<React.ComponentPropsWithoutRef<C>, PropsToOmit<C, Props>>;
+> = PropsWithChildren<Props & AsProp<C>> &
+  Omit<ComponentPropsWithoutRef<C>, PropsToOmit<C, Props>>;
 
-export const Text = <C extends React.ElementType = "span">({
+export const Text = <C extends ElementType = "span">({
   as,
   color,
   children,
