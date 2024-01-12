@@ -3,6 +3,7 @@ import {
   PropsWithChildren,
   ComponentPropsWithRef,
   ComponentPropsWithoutRef,
+  forwardRef,
 } from "react";
 
 type Rainbow =
@@ -30,17 +31,19 @@ type PolymorphicComponentProp<
 > = PropsWithChildren<Props & AsProp<C>> &
   Omit<ComponentPropsWithoutRef<C>, PropsToOmit<C, Props>>;
 
-export const Text = <C extends ElementType = "span">(
-  { as, color, children, ...rest }: PolymorphicComponentProp<C, TextProps>,
-  ref?: PolymorphicRef<C>
-) => {
-  const Component = as || "span";
+export const Text = forwardRef(
+  <C extends ElementType = "span">(
+    { as, color, children, ...rest }: PolymorphicComponentProp<C, TextProps>,
+    ref?: PolymorphicRef<C>
+  ) => {
+    const Component = as || "span";
 
-  const style = color ? { style: { color } } : {};
+    const style = color ? { style: { color } } : {};
 
-  return (
-    <Component ref={ref} {...style} {...rest}>
-      {children}
-    </Component>
-  );
-};
+    return (
+      <Component ref={ref} {...style} {...rest}>
+        {children}
+      </Component>
+    );
+  }
+);
